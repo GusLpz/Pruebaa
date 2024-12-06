@@ -132,11 +132,14 @@ benchmark_options = {
 selected_benchmark = st.sidebar.selectbox("Seleccione el benchmark:", list(benchmark_options.keys()))
 benchmark = benchmark_options[selected_benchmark]
 
+pesos = [0.2,0.2,0.2,0.2,0.2]
+
 if len(simbolos) != len(pesos) or abs(sum(pesos) - 1) > 1e-6:
     st.sidebar.error("El número de símbolos debe coincidir con el número de pesos, y los pesos deben sumar 1.")
 else:
     # Obtener datos
-    df_stocks = obtener_datos_acciones(simbolos, start_date, end_date)
+    all_symbols = simbolos + [benchmark]
+    df_stocks = obtener_datos_acciones(all_symbols, start_date, end_date)
     returns, cumulative_returns, normalized_prices = calcular_metricas(df_stocks)
     
     # Rendimientos del portafolio
