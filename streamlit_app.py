@@ -237,47 +237,47 @@ else:
             - **Estilo:** {summary['estilo']}
             - **Costos:** {summary['costos']}
             """)
-            var_95, cvar_95 = calcular_var_cvar(returns[selected_asset])
-            sharpe = calcular_sharpe_ratio(returns[selected_asset])
-            sortino = calcular_sortino_ratio(returns[selected_asset])
-            sesgo = calcular_sesgo(returns[selected_asset])
-            exceso_curtosis = calcular_exceso_curtosis(returns[selected_asset]) 
-            ultimo_drawdown = calcular_ultimo_drawdown(cumulative_returns[selected_asset])
+        var_95, cvar_95 = calcular_var_cvar(returns[selected_asset])
+        sharpe = calcular_sharpe_ratio(returns[selected_asset])
+        sortino = calcular_sortino_ratio(returns[selected_asset])
+        sesgo = calcular_sesgo(returns[selected_asset])
+        exceso_curtosis = calcular_exceso_curtosis(returns[selected_asset]) 
+        ultimo_drawdown = calcular_ultimo_drawdown(cumulative_returns[selected_asset])
        
     
-            col1, col2, col3 = st.columns(3)
-            col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
-            col2.metric("Sharpe Ratio", f"{calcular_sharpe_ratio(returns[selected_asset]):.2f}")
-            col3.metric("Sortino Ratio", f"{calcular_sortino_ratio(returns[selected_asset]):.2f}")
-            
-            col4, col5, col6 = st.columns(3)
-            col4.metric("VaR 95%", f"{var_95:.2%}")
-            col5.metric("CVaR 95%", f"{cvar_95:.2%}")
-            col6.metric("Media Retornos", f"{returns[selected_asset].mean():.2%}")
-            
-            col7, col8, col9 = st.columns(3)
-            col7.metric("Sesgo de Retornos", f"{sesgo:.3f}")  # Nueva métrica
-            col8.metric("Exceso de Curtosis", f"{exceso_curtosis:.3f}")  
-            col9.metric("Último Drawdown", f"{ultimo_drawdown:.2%}")  # Último Drawdown añadido
-            
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
+        col2.metric("Sharpe Ratio", f"{calcular_sharpe_ratio(returns[selected_asset]):.2f}")
+        col3.metric("Sortino Ratio", f"{calcular_sortino_ratio(returns[selected_asset]):.2f}")
+        
+        col4, col5, col6 = st.columns(3)
+        col4.metric("VaR 95%", f"{var_95:.2%}")
+        col5.metric("CVaR 95%", f"{cvar_95:.2%}")
+        col6.metric("Media Retornos", f"{returns[selected_asset].mean():.2%}")
+        
+        col7, col8, col9 = st.columns(3)
+        col7.metric("Sesgo de Retornos", f"{sesgo:.3f}")  # Nueva métrica
+        col8.metric("Exceso de Curtosis", f"{exceso_curtosis:.3f}")  
+        col9.metric("Último Drawdown", f"{ultimo_drawdown:.2%}")  # Último Drawdown añadido
+        
 
+        
+        # Gráfico de precio normalizado del activo seleccionado vs benchmark
+        fig_asset = go.Figure()
+        fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[selected_asset], name=selected_asset))
+        fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[benchmark], name=selected_benchmark))
+        fig_asset.update_layout(
+            title=f'Precio Normalizado: {selected_asset} vs {selected_benchmark} (Base 100)', 
+            xaxis_title='Fecha', 
+            yaxis_title='Precio Normalizado'
+        )
+        st.plotly_chart(fig_asset, use_container_width=True)
             
-            # Gráfico de precio normalizado del activo seleccionado vs benchmark
-            fig_asset = go.Figure()
-            fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[selected_asset], name=selected_asset))
-            fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[benchmark], name=selected_benchmark))
-            fig_asset.update_layout(
-                title=f'Precio Normalizado: {selected_asset} vs {selected_benchmark} (Base 100)', 
-                xaxis_title='Fecha', 
-                yaxis_title='Precio Normalizado'
-            )
-            st.plotly_chart(fig_asset, use_container_width=True)
-            
-            # Beta del activo vs benchmark
-            beta_asset = calcular_beta(returns[selected_asset], returns[benchmark])
-            st.metric(f"Beta vs {selected_benchmark}", f"{beta_asset:.2f}")
+        # Beta del activo vs benchmark
+        beta_asset = calcular_beta(returns[selected_asset], returns[benchmark])
+        st.metric(f"Beta vs {selected_benchmark}", f"{beta_asset:.2f}")
 
-            st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
+        st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
         
         col1, col2 = st.columns(2)
         
