@@ -203,6 +203,10 @@ else:
         var_95, cvar_95 = calcular_var_cvar(returns[selected_asset])
         sharpe = calcular_sharpe_ratio(returns[selected_asset])
         sortino = calcular_sortino_ratio(returns[selected_asset])
+        sesgo = calcular_sesgo(returns[selected_asset])
+        exceso_curtosis = calcular_exceso_curtosis(returns[selected_asset]) 
+        ultimo_drawdown = calcular_ultimo_drawdown(cumulative_returns[selected_asset])
+   
 
         col1, col2, col3 = st.columns(3)
         col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
