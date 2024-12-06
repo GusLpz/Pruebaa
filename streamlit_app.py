@@ -277,6 +277,33 @@ else:
             beta_asset = calcular_beta(returns[selected_asset], returns[benchmark])
             st.metric(f"Beta vs {selected_benchmark}", f"{beta_asset:.2f}")
 
+            st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Histograma para el activo seleccionado
+            var_asset, cvar_asset = calcular_var_cvar(returns[selected_asset])
+            fig_hist_asset = crear_histograma_distribucion(
+                returns[selected_asset],
+                var_asset,
+                cvar_asset,
+                f'Distribución de Retornos - {selected_asset}'
+            )
+            st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
+            
+        with col2:
+            # Histograma para el benchmark
+            var_bench, cvar_bench = calcular_var_cvar(returns[benchmark])
+            fig_hist_bench = crear_histograma_distribucion(
+                returns[benchmark],
+                var_bench,
+                cvar_bench,
+                f'Distribución de Retornos - {selected_benchmark}'
+            )
+            st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
+
+
     with tab2:
         st.header("Análisis del Portafolio")
         
