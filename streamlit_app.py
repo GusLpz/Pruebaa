@@ -124,9 +124,72 @@ else:
     # Crear pestañas
     tab1, tab2 = st.tabs(["Análisis de Activos Individuales", "Análisis del Portafolio"])
 
+    etf_summaries = {
+    "IEI": {
+        "nombre": "iShares 3-7 Year Treasury Bond ETF",
+        "exposicion": "Bonos del Tesoro de EE. UU. con vencimientos entre 3 y 7 años",
+        "indice": "ICE U.S. Treasury 3-7 Year Bond Index",
+        "moneda": "USD",
+        "pais": "Estados Unidos",
+        "estilo": "Renta fija desarrollada",
+        "costos": "0.15%",
+    },
+    "EMB": {
+        "nombre": "iShares J.P. Morgan USD Emerging Markets Bond ETF",
+        "exposicion": "Bonos soberanos y cuasi-soberanos de mercados emergentes",
+        "indice": "J.P. Morgan EMBI Global Core Index",
+        "moneda": "USD",
+        "pais": "Diversos mercados emergentes (Brasil, México, Sudáfrica, etc.)",
+        "estilo": "Renta fija emergente",
+        "costos": "0.39%",
+    },
+    "SPY": {
+        "nombre": "SPDR S&P 500 ETF Trust",
+        "exposicion": "500 empresas más grandes de Estados Unidos",
+        "indice": "S&P 500 Index",
+        "moneda": "USD",
+        "pais": "Estados Unidos",
+        "estilo": "Renta variable desarrollada",
+        "costos": "0.09%",
+    },
+    "IEMG": {
+        "nombre": "iShares Core MSCI Emerging Markets ETF",
+        "exposicion": "Empresas de gran y mediana capitalización en mercados emergentes",
+        "indice": "MSCI Emerging Markets Investable Market Index",
+        "moneda": "USD",
+        "pais": "China, India, Brasil, y otros mercados emergentes",
+        "estilo": "Renta variable emergente",
+        "costos": "0.11%",
+    },
+    "GLD": {
+        "nombre": "SPDR Gold Shares",
+        "exposicion": "Precio del oro físico (lingotes almacenados en bóvedas)",
+        "indice": "Precio spot del oro",
+        "moneda": "USD",
+        "pais": "Exposición global",
+        "estilo": "Materias primas",
+        "costos": "0.40%",
+    }
+    }
+
     with tab1:
         st.header("Análisis de Activos Individuales")
         selected_asset = st.selectbox("Seleccione un activo para analizar:", simbolos)
+
+          selected_asset = st.selectbox("Seleccione un activo para analizar:", simbolos)
+
+        if selected_asset in etf_summaries:
+            st.subheader(f"Resumen del ETF: {selected_asset}")
+            summary = etf_summaries[selected_asset]
+            st.markdown(f"""
+            - **Nombre:** {summary['nombre']}
+            - **Exposición:** {summary['exposicion']}
+            - **Índice que sigue:** {summary['indice']}
+            - **Moneda de denominación:** {summary['moneda']}
+            - **País o región principal:** {summary['pais']}
+            - **Estilo:** {summary['estilo']}
+            - **Costos:** {summary['costos']}
+            """)
         var_95, cvar_95 = calcular_var_cvar(returns[selected_asset])
         sharpe = calcular_sharpe_ratio(returns[selected_asset])
         sortino = calcular_sortino_ratio(returns[selected_asset])
