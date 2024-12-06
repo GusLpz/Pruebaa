@@ -326,8 +326,6 @@ else:
         # Beta del portafolio vs benchmark
         beta_portfolio = calcular_beta(portfolio_returns, returns[benchmark])
         st.metric(f"Beta del Portafolio vs {selected_benchmark}", f"{beta_portfolio:.2f}")
-        
-
         st.subheader("Distribución de Retornos del Portafolio vs Benchmark")
         
         col1, col2 = st.columns(2)
