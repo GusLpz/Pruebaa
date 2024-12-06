@@ -304,6 +304,7 @@ else:
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
 
 
+    
     with tab2:
         st.header("Análisis del Portafolio")
         
