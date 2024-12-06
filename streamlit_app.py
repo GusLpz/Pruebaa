@@ -122,6 +122,16 @@ pesos_input = st.sidebar.text_input(
 simbolos = [s.strip() for s in simbolos_input.split(',') if s.strip() in etfs_permitidos]
 pesos = [float(w.strip()) for w in pesos_input.split(',')]
 
+benchmark_options = {
+    "S&P 500": "^GSPC",
+    "Nasdaq": "^IXIC",
+    "Dow Jones": "^DJI",
+    "Russell 2000": "^RUT",
+    "ACWI": "ACWI"
+}
+selected_benchmark = st.sidebar.selectbox("Seleccione el benchmark:", list(benchmark_options.keys()))
+benchmark = benchmark_options[selected_benchmark]
+
 if len(simbolos) != len(pesos) or abs(sum(pesos) - 1) > 1e-6:
     st.sidebar.error("El número de símbolos debe coincidir con el número de pesos, y los pesos deben sumar 1.")
 else:
