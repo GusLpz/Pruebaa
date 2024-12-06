@@ -262,7 +262,7 @@ else:
         col7, col8, col9 = st.columns(3)
         col7.metric("Sesgo de Retornos", f"{sesgo:.3f}")
         col8.metric("Exceso de Curtosis", f"{exceso_curtosis:.3f}")
-        col9.metric("Último Drawdown", f"{ultimo_drawdown:.2%}")
+        col9.metric("Drawdown", f"{ultimo_drawdown:.2%}")
 
         # Gráficos
         fig_asset = go.Figure()
