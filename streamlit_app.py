@@ -260,23 +260,17 @@ else:
         col8.metric("Exceso de Curtosis", f"{exceso_curtosis:.3f}")  
         col9.metric("Último Drawdown", f"{ultimo_drawdown:.2%}")  # Último Drawdown añadido
         
-
-        
-        # Gráfico de precio normalizado del activo seleccionado vs benchmark
+        #Gráfico de precio normalizado del activo seleccionado vs benchmark
         fig_asset = go.Figure()
         fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[selected_asset], name=selected_asset))
         fig_asset.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[benchmark], name=selected_benchmark))
-        fig_asset.update_layout(
-            title=f'Precio Normalizado: {selected_asset} vs {selected_benchmark} (Base 100)', 
-            xaxis_title='Fecha', 
-            yaxis_title='Precio Normalizado'
-        )
-        st.plotly_chart(fig_asset, use_container_width=True)
-            
+        fig_asset.update_layout(title=f'Precio Normalizado: {selected_asset} vs {selected_benchmark} (Base 100)', xaxis_title='Fecha', yaxis_title='Precio Normalizado')
+        st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
+        
         # Beta del activo vs benchmark
         beta_asset = calcular_beta(returns[selected_asset], returns[benchmark])
         st.metric(f"Beta vs {selected_benchmark}", f"{beta_asset:.2f}")
-
+        
         st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
         
         col1, col2 = st.columns(2)
@@ -302,7 +296,8 @@ else:
                 f'Distribución de Retornos - {selected_benchmark}'
             )
             st.plotly_chart(fig_hist_bench, use_container_width=True, key="hist_bench_1")
-
+        
+        
 
     
     with tab2:
