@@ -7,6 +7,18 @@ from datetime import datetime
 from scipy.optimize import minimize
 
 # Funciones auxiliares
+
+def calcular_sesgo(df):
+    return df.skew()
+
+def calcular_exceso_curtosis(returns):
+    return returns.kurtosis()
+
+def calcular_ultimo_drawdown(series):
+    peak = series.expanding(min_periods=1).max()
+    drawdown = (series - peak) / peak
+    ultimo_drawdown = drawdown.iloc[-1]
+    return ultimo_drawdown
 def obtener_datos_acciones(simbolos, start_date, end_date):
     data = yf.download(simbolos, start=start_date, end=end_date)['Close']
     return data.ffill().dropna()
@@ -192,12 +204,23 @@ else:
         sharpe = calcular_sharpe_ratio(returns[selected_asset])
         sortino = calcular_sortino_ratio(returns[selected_asset])
 
-        st.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
-        st.metric("VaR 95%", f"{var_95:.2%}")
-        st.metric("CVaR 95%", f"{cvar_95:.2%}")
-        st.metric("Sharpe Ratio", f"{sharpe:.2f}")
-        st.metric("Sortino Ratio", f"{sortino:.2f}")
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Rendimiento Total", f"{cumulative_returns[selected_asset].iloc[-1]:.2%}")
+        col2.metric("Sharpe Ratio", f"{calcular_sharpe_ratio(returns[selected_asset]):.2f}")
+        col3.metric("Sortino Ratio", f"{calcular_sortino_ratio(returns[selected_asset]):.2f}")
+        
+        col4, col5, col6 = st.columns(3)
+        col4.metric("VaR 95%", f"{var_95:.2%}")
+        col5.metric("CVaR 95%", f"{cvar_95:.2%}")
+        col6.metric("Media Retornos", f"{returns[selected_asset].mean():.2%}")
+        
+        col7, col8, col9 = st.columns(3)
+        col7.metric("Sesgo de Retornos", f"{sesgo:.3f}")  # Nueva métrica
+        col8.metric("Exceso de Curtosis", f"{exceso_curtosis:.3f}")  
+        col9.metric("Último Drawdown", f"{ultimo_drawdown:.2%}")  # Último Drawdown añadido
+        
 
+    
         # Gráfico de precio normalizado
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=normalized_prices.index, y=normalized_prices[selected_asset], name=selected_asset))
