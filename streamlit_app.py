@@ -276,7 +276,7 @@ else:
         st.metric(f"Beta vs {selected_benchmark}", f"{beta_asset:.2f}")
 
         col44 = st.columns(1)
-        col44.metric("Media Pendeja", f"{returns[selescted_asset].mean():.2%}")
+        col44.metric("Media Pendeja", f"{returns[selected_asset].mean():.2%}")
         
         
         
