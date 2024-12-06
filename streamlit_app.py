@@ -276,9 +276,9 @@ else:
 
         # Distribución de retornos
         st.subheader(f"Distribución de Retornos: {selected_asset} vs {selected_benchmark}")
-        col1, col2 = st.columns(2)
+        col10, col11 = st.columns(2)
 
-        with col1:
+        with col10:
             var_asset, cvar_asset = calcular_var_cvar(returns[selected_asset])
             fig_hist_asset = crear_histograma_distribucion(
                 returns[selected_asset],
@@ -288,7 +288,7 @@ else:
             )
             st.plotly_chart(fig_hist_asset, use_container_width=True, key="hist_asset")
         
-        with col2:
+        with col11:
             var_bench, cvar_bench = calcular_var_cvar(returns[benchmark])
             fig_hist_bench = crear_histograma_distribucion(
                 returns[benchmark],
