@@ -176,8 +176,6 @@ else:
         st.header("Análisis de Activos Individuales")
         selected_asset = st.selectbox("Seleccione un activo para analizar:", simbolos)
 
-          selected_asset = st.selectbox("Seleccione un activo para analizar:", simbolos)
-
         if selected_asset in etf_summaries:
             st.subheader(f"Resumen del ETF: {selected_asset}")
             summary = etf_summaries[selected_asset]
